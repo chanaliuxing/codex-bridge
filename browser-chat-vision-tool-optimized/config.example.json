@@ -1,0 +1,243 @@
+{
+  "capture_region": {
+    "left": 0,
+    "top": 0,
+    "width": 1600,
+    "height": 1000
+  },
+  "rois": {
+    "whole": {
+      "x0": 0.0,
+      "y0": 0.0,
+      "x1": 1.0,
+      "y1": 1.0
+    },
+    "top_left": {
+      "x0": 0.0,
+      "y0": 0.0,
+      "x1": 0.45,
+      "y1": 0.2
+    },
+    "bottom_input": {
+      "x0": 0.0,
+      "y0": 0.7,
+      "x1": 0.72,
+      "y1": 1.0
+    },
+    "bottom_right": {
+      "x0": 0.66,
+      "y0": 0.68,
+      "x1": 1.0,
+      "y1": 1.0
+    },
+    "bottom_band": {
+      "x0": 0.0,
+      "y0": 0.68,
+      "x1": 1.0,
+      "y1": 1.0
+    },
+    "center_lower": {
+      "x0": 0.35,
+      "y0": 0.5,
+      "x1": 0.65,
+      "y1": 1.0
+    }
+  },
+  "matching": {
+    "default_threshold": 0.84,
+    "scale_factors": [
+      0.45,
+      0.5,
+      0.55,
+      0.9,
+      0.95,
+      1.0,
+      1.05,
+      1.1
+    ]
+  },
+  "timing": {
+    "poll_interval_sec": 0.6,
+    "focus_min_interval_sec": 1.2,
+    "region_sync_min_interval_sec": 0.5,
+    "mouse_move_duration_sec": 2.0,
+    "move_mouse_to_corner_after_click": true,
+    "mouse_hide_x": 1,
+    "mouse_hide_y": 1,
+    "mouse_hide_move_duration_sec": 0.2,
+    "click_after_sec": 1.0,
+    "input_click_anchor": "right",
+    "input_click_margin_px": 10,
+    "input_fallback_enabled": true,
+    "input_fallback_w_px": 40,
+    "input_fallback_h_px": 40,
+    "input_fallback_gap_px": 200,
+    "input_fallback_left_offset_px": 250,
+    "wait_input_timeout_sec": 10.0,
+    "send_restart_max_attempts": 3,
+    "unknown_fast_fail_count": 3,
+    "send_after_paste_sec": 0.2,
+    "post_paste_check_delay_sec": 2.0,
+    "post_paste_pre_send_delay_sec": 1.0,
+    "paste_confirm_delays_sec": [
+      2.0,
+      5.0,
+      15.0
+    ],
+    "paste_confirm_timeout_sec": 2.0,
+    "paste_diff_threshold": 2.0,
+    "paste_confirm_max_attempts": 3,
+    "require_waiting_after_send": true,
+    "post_send_waiting_timeout_sec": 5.0,
+    "copy_after_click_sec": 2.0,
+    "copy_wait_timeout_sec": 3.0,
+    "down_arrow_after_click_sec": 0.35,
+    "post_stop_settle_sec": 0.5,
+    "wait_waiting_start_timeout_sec": 30,
+    "wait_reply_timeout_sec": 180
+  },
+  "history": {
+    "keep_last": 200
+  },
+  "observability": {
+    "events_file": "vision_events.jsonl",
+    "keep_last_events": 5000,
+    "log_every_poll": false,
+    "state_log_interval_sec": 1.5,
+    "save_debug_on_error": true
+  },
+  "browser": {
+    "auto_prepare": true,
+    "force_foreground_before_capture": true,
+    "dynamic_capture_region": true,
+    "target_url": "https://chatgpt.com/"
+  },
+  "debug_dir": "debug",
+  "templates": {
+    "page_chatgpt": {
+      "path": "templates/page_chatgpt.png",
+      "threshold": 0.88,
+      "roi": "top_left",
+      "preprocess": [
+        "gray",
+        "edge"
+      ]
+    },
+    "mode_thinking": {
+      "path": "templates/mode_thinking.png",
+      "threshold": 0.86,
+      "roi": "top_left",
+      "preprocess": [
+        "gray"
+      ]
+    },
+    "mode_extended_thinking": {
+      "path": "templates/mode_extended_thinking.png",
+      "threshold": 0.86,
+      "roi": "top_left",
+      "preprocess": [
+        "gray"
+      ]
+    },
+    "input_box": {
+      "path": "templates/input_box.png",
+      "threshold": 0.82,
+      "roi": "bottom_input",
+      "preprocess": [
+        "gray",
+        "edge"
+      ]
+    },
+    "typebox": {
+      "path": "templates/typebox.png",
+      "threshold": 0.82,
+      "roi": "bottom_input",
+      "preprocess": [
+        "gray",
+        "edge"
+      ]
+    },
+    "voice_button": {
+      "path": "templates/voice_button.png",
+      "threshold": 0.86,
+      "roi": "bottom_band",
+      "preprocess": [
+        "gray",
+        "edge"
+      ]
+    },
+    "send_button": {
+      "path": "templates/send_button.png",
+      "threshold": 0.88,
+      "roi": "bottom_right",
+      "preprocess": [
+        "gray",
+        "edge"
+      ]
+    },
+    "stop_button": {
+      "path": "templates/stop_button.png",
+      "threshold": 0.88,
+      "roi": "bottom_right",
+      "preprocess": [
+        "gray",
+        "edge"
+      ]
+    },
+    "stop_button_with_mic": {
+      "path": "templates/stop_button_with_mic.png",
+      "threshold": 0.88,
+      "roi": "bottom_band",
+      "preprocess": [
+        "gray",
+        "edge"
+      ]
+    },
+    "copy_button": {
+      "path": "templates/copy_button.png",
+      "threshold": 0.86,
+      "roi": "whole",
+      "preprocess": [
+        "gray",
+        "edge"
+      ]
+    },
+    "down_arrow": {
+      "path": "templates/down_arrow.png",
+      "threshold": 0.86,
+      "roi": "center_lower",
+      "preprocess": [
+        "gray",
+        "edge"
+      ]
+    }
+  },
+  "logic": {
+    "page_markers": [
+      "page_chatgpt",
+      "mode_thinking",
+      "mode_extended_thinking"
+    ],
+    "input_markers": [
+      "typebox",
+      "input_box"
+    ],
+    "voice_markers": [
+      "voice_button"
+    ],
+    "send_markers": [
+      "send_button"
+    ],
+    "waiting_markers": [
+      "stop_button",
+      "stop_button_with_mic"
+    ],
+    "reply_markers": [
+      "copy_button"
+    ],
+    "down_arrow_markers": [
+      "down_arrow"
+    ],
+    "down_arrow_max_clicks": 3
+  }
+}

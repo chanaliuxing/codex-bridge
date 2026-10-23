@@ -1,0 +1,96 @@
+{
+  "memoryDir": "./data",
+  "maxRecentMessages": 40,
+  "summaryTrigger": 50,
+  "summaryKeep": 18,
+  "server": {
+    "enabled": true,
+    "host": "127.0.0.1",
+    "port": 43188
+  },
+  "adapters": [
+    {
+      "type": "console",
+      "name": "console"
+    },
+    {
+      "type": "folder",
+      "name": "local_inbox",
+      "inDir": "./data/bridge_inbox",
+      "outDir": "./data/bridge_outbox",
+      "pollIntervalMs": 500
+    },
+    {
+      "type": "stdioTool",
+      "name": "stdio_upper",
+      "command": "node",
+      "args": [
+        "./examples/node-stdio-uppercase-tool.js"
+      ]
+    },
+    {
+      "type": "stdioTool",
+      "name": "python_stdio",
+      "command": "python3",
+      "args": [
+        "./examples/python_stdio_tool.py"
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "file_reverse",
+      "inDir": "./mailboxes/file_reverse/outbox",
+      "outDir": "./mailboxes/file_reverse/inbox",
+      "pollIntervalMs": 500
+    },
+    {
+      "type": "folder",
+      "name": "python_folder",
+      "inDir": "./mailboxes/python_folder/outbox",
+      "outDir": "./mailboxes/python_folder/inbox",
+      "pollIntervalMs": 500
+    }
+  ],
+  "routes": [
+    {
+      "from": "local_inbox",
+      "to": "console"
+    },
+    {
+      "from": "local_inbox",
+      "contains": "#upper",
+      "to": "stdio_upper"
+    },
+    {
+      "from": "local_inbox",
+      "contains": "#py",
+      "to": "python_stdio"
+    },
+    {
+      "from": "local_inbox",
+      "contains": "#reverse",
+      "to": "file_reverse"
+    },
+    {
+      "from": "local_inbox",
+      "contains": "#pyfolder",
+      "to": "python_folder"
+    },
+    {
+      "from": "stdio_upper",
+      "to": "console"
+    },
+    {
+      "from": "python_stdio",
+      "to": "console"
+    },
+    {
+      "from": "file_reverse",
+      "to": "console"
+    },
+    {
+      "from": "python_folder",
+      "to": "console"
+    }
+  ]
+}

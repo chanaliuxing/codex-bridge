@@ -1,0 +1,158 @@
+{
+  "memoryDir": "./data",
+  "maxRecentMessages": 40,
+  "summaryTrigger": 50,
+  "summaryKeep": 18,
+  "server": {
+    "enabled": true,
+    "host": "127.0.0.1",
+    "port": 43188
+  },
+  "codex": {
+    "command": "codex",
+    "args": [
+      "app-server"
+    ],
+    "model": "gpt-5.3-codex",
+    "approvalPolicy": "never",
+    "personality": "friendly",
+    "cwd": ".",
+    "serviceName": "codex_bridge_complete",
+    "sandboxPolicy": {
+      "type": "workspaceWrite",
+      "writableRoots": [
+        "."
+      ],
+      "networkAccess": false
+    }
+  },
+  "supervisor": {
+    "enabled": true,
+    "threadPrefix": "sup_",
+    "codexAdapterName": "codex",
+    "supervisorFrom": "chatgpt_supervisor",
+    "pythonCommand": "python3",
+    "toolDir": "./browser-chat-vision-tool-optimized",
+    "toolConfig": "config.json",
+    "eventsFile": "./data/supervisor_events.jsonl",
+    "stopOnCodexFailure": true,
+    "stopOnUsageLimit": true,
+    "promptPrefix": "为了加快进度,监督并指导 Codex 干活。要求颗粒度不要太精细,这样会影响进度,codex 一次可以完成相当多的任务,另外：1) 严格围绕当前目标和计划，不跑偏；2) 明确当前所处阶段，并给出简短长期计划与下一步；3) 输出必须简洁、可执行、可直接交给 Codex 执行；4) 不要输出无关解释和空话；5) 若信息不足，先给最小闭环动作再继续。",
+    "maxAutoTurnsPerThread": 999
+  },
+  "adapters": [
+    {
+      "type": "console",
+      "name": "console"
+    },
+    {
+      "type": "telegram",
+      "name": "telegram",
+      "threadId": "tg_default",
+      "sessionThreadPrefix": "tg_",
+      "supervisorThreadPrefix": "sup_",
+      "outboundThreadPrefix": "tg_",
+      "defaultTo": "codex"
+    },
+    {
+      "type": "folder",
+      "name": "local_inbox",
+      "inDir": "./data/bridge_inbox",
+      "outDir": "./data/bridge_outbox",
+      "pollIntervalMs": 500
+    },
+    {
+      "type": "codexAppServer",
+      "name": "codex"
+    },
+    {
+      "type": "stdioTool",
+      "name": "stdio_upper",
+      "command": "node",
+      "args": [
+        "./examples/node-stdio-uppercase-tool.js"
+      ]
+    },
+    {
+      "type": "stdioTool",
+      "name": "python_stdio",
+      "command": "python3",
+      "args": [
+        "./examples/python_stdio_tool.py"
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "file_reverse",
+      "inDir": "./mailboxes/file_reverse/outbox",
+      "outDir": "./mailboxes/file_reverse/inbox",
+      "pollIntervalMs": 500
+    },
+    {
+      "type": "folder",
+      "name": "python_folder",
+      "inDir": "./mailboxes/python_folder/outbox",
+      "outDir": "./mailboxes/python_folder/inbox",
+      "pollIntervalMs": 500
+    }
+  ],
+  "routes": [
+    {
+      "from": "local_inbox",
+      "to": "console"
+    },
+    {
+      "from": "local_inbox",
+      "contains": "#codex",
+      "to": "codex"
+    },
+    {
+      "from": "local_inbox",
+      "contains": "#upper",
+      "to": "stdio_upper"
+    },
+    {
+      "from": "local_inbox",
+      "contains": "#py",
+      "to": "python_stdio"
+    },
+    {
+      "from": "local_inbox",
+      "contains": "#reverse",
+      "to": "file_reverse"
+    },
+    {
+      "from": "local_inbox",
+      "contains": "#pyfolder",
+      "to": "python_folder"
+    },
+    {
+      "from": "codex",
+      "to": "telegram"
+    },
+    {
+      "from": "codex",
+      "to": "console"
+    },
+    {
+      "from": "telegram",
+      "to": "console"
+    },
+    {
+      "from": "stdio_upper",
+      "to": "console"
+    },
+    {
+      "from": "python_stdio",
+      "to": "console"
+    },
+    {
+      "from": "file_reverse",
+      "to": "console"
+    },
+    {
+      "from": "python_folder",
+      "to": "console"
+    }
+  ]
+}

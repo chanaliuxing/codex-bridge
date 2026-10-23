@@ -1,0 +1,44 @@
+**Changed**
+- `./nbaiagent/newnbserver/nbserver/services/genericBrowserQuarantineE2ESmokeService.js`
+  - 新增端到端 no-effect smoke 服务：`runGenericBrowserQuarantineE2ESmoke(...)`
+  - 串联：`normalize -> review_pending/review_approved -> dispatch_ready -> generic_browser_quarantine -> receipt parser candidate -> effect`
+  - 内置 duplicate replay 路径与 lineage/audit 输出
+- `./nbaiagent/newnbserver/nbserver/tests/platformExecutionPlanService.test.js`
+  - 新增 `generic_browser_quarantine E2E no-effect workflow smoke` 测试
+- 新增 evidence:
+  - `./nbaiagent/docs/reports/artifacts/batch_aa_generic_browser_quarantine_e2e_20260511.json`
+  - `./nbaiagent/docs/reports/review/batch_aa_generic_browser_quarantine_e2e_report_20260511.md`
+
+**Tests**
+- `cd ./nbaiagent/newnbserver/nbserver`
+- `npx jest tests/observedEventIngestRoutes.test.js tests/observedEventCandidateActionReviewService.test.js tests/platformExecutionPlanService.test.js tests/clientActionResultService.test.js tests/clientActionResultRepository.test.js --runInBand`
+  - PASS (5 suites, 60 tests)
+- `git diff --check`
+  - PASS
+
+**E2E smoke proof**
+- 流程已串通：generic_browser fixture -> observed_event normalize -> review lifecycle -> dispatch_ready dry-run -> quarantine adapter(no_effect) -> receipt candidate -> effect record。
+- 结果符合 no-effect 预期。
+
+**No-side-effect proof**
+- `providerCalled=false`
+- `externalSideEffect=false`
+- 无 click/send/submit 执行路径。
+
+**Lineage proof**
+- 产出 `observed_event/action/result/effect` 可追踪链路字段，并记录 audit trace events。
+
+**Duplicate proof**
+- 同 idempotency replay 第二次不会产生第二个 committed effect，返回 duplicate 语义（`effectStatus=duplicate`）。
+
+**Evidence paths**
+- `./nbaiagent/docs/reports/artifacts/batch_aa_generic_browser_quarantine_e2e_20260511.json`
+- `./nbaiagent/docs/reports/review/batch_aa_generic_browser_quarantine_e2e_report_20260511.md`
+
+**Remaining blockers**
+- 真实 provider 执行仍禁用（按本批约束）。
+- 无真实 external receipt（按本批约束）。
+- 非 production ready（按本批约束）。
+
+**Decision**
+- `GENERIC_BROWSER_QUARANTINE_E2E_READY_DEV_ONLY`

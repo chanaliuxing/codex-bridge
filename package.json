@@ -1,0 +1,21 @@
+{
+  "name": "codex-bridge-complete",
+  "version": "0.2.0",
+  "description": "Simple Codex bridge with adapters, local memory, route rules, SDKs, and a tiny web UI",
+  "type": "module",
+  "license": "MIT",
+  "author": "Wei Zhang",
+  "scripts": {
+    "start": "node src/index.js",
+    "send": "node src/cli/send.js",
+    "show:thread": "node src/cli/show-thread.js",
+    "list:threads": "node src/cli/list-threads.js",
+    "tool:stdio": "node examples/node-stdio-uppercase-tool.js",
+    "tool:file": "node examples/node-file-reverse-tool.js",
+    "tool:python:stdio": "python3 examples/python_stdio_tool.py",
+    "tool:python:file": "python3 examples/python_folder_tool.py"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

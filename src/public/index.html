@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Codex Bridge</title>
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <h1>Codex Bridge</h1>
+        <div class="section">
+          <div class="label">Adapters</div>
+          <div id="adapters"></div>
+        </div>
+        <div class="section">
+          <div class="label">Threads</div>
+          <div id="threads"></div>
+        </div>
+      </aside>
+      <main class="main">
+        <section class="card">
+          <h2>Send Message</h2>
+          <div class="grid">
+            <label>Thread <input id="threadId" value="demo" /></label>
+            <label>From <input id="from" value="user" /></label>
+            <label>To <input id="to" value="stdio_upper" /></label>
+            <label>Reply To <input id="replyTo" value="console" /></label>
+          </div>
+          <label>Text</label>
+          <textarea id="text" rows="4">hello world</textarea>
+          <div class="actions">
+            <button id="sendBtn">Send</button>
+            <button id="refreshBtn">Refresh Thread</button>
+          </div>
+        </section>
+
+        <section class="card two-col">
+          <div>
+            <h2>Recent Messages</h2>
+            <div id="messages" class="messages"></div>
+          </div>
+          <div>
+            <h2>Summary</h2>
+            <pre id="summary"></pre>
+            <h2>State</h2>
+            <pre id="state"></pre>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="/assets/app.js"></script>
+  </body>
+</html>
